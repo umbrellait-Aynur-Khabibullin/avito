@@ -34,6 +34,10 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Приложению нужен доступ к галерее для добавления фото товара</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Приложению нужна камера для съёмки фото товара</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>UILaunchStoryboardName</key>

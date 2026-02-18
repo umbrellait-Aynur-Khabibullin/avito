@@ -4,8 +4,11 @@ import { addProduct, getProducts } from './thunks';
 
 export { addProduct, getProducts } from './thunks';
 
+export type ProductSortBy = 'price' | 'sellerRating';
+
 export type ProductState = {
   items: Product[];
+  sortBy: ProductSortBy;
   isLoading: boolean;
   addLoading: boolean;
   error: string | null;
@@ -13,6 +16,7 @@ export type ProductState = {
 
 const initialState: ProductState = {
   items: [],
+  sortBy: 'price',
   isLoading: false,
   addLoading: false,
   error: null,
@@ -24,6 +28,9 @@ const productSlice = createSlice({
   reducers: {
     clearProductError: (state) => {
       state.error = null;
+    },
+    setProductSort: (state, action: { payload: ProductSortBy }) => {
+      state.sortBy = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -57,5 +64,5 @@ const productSlice = createSlice({
   },
 });
 
-export const { clearProductError } = productSlice.actions;
+export const { clearProductError, setProductSort } = productSlice.actions;
 export const productReducer = productSlice.reducer;

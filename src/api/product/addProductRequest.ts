@@ -14,6 +14,7 @@ export function addProductRequest(payload: AddProductPayload): Promise<Product> 
     price: payload.price,
     sellerId: payload.sellerId,
     sellerName: payload.sellerName,
+    imageUrls: payload.imageUrls ?? [],
     createdAt: new Date().toISOString(),
   };
   getMockProductsStore().push(product);

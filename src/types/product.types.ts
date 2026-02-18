@@ -5,8 +5,11 @@ export type Product = {
   price: number;
   sellerId: string;
   sellerName?: string;
+  sellerRating?: number;
   createdAt: string;
+  /** @deprecated use imageUrls instead */
   imageUrl?: string;
+  imageUrls?: string[];
 };
 
 export type AddProductPayload = {
@@ -15,4 +18,5 @@ export type AddProductPayload = {
   price: number;
   sellerId: string;
   sellerName?: string;
+  imageUrls?: string[];
 };

@@ -4,6 +4,6 @@ import type {
   MyProductsStackParamList,
 } from '../../navigation/MainNavigator.types';
 
-export type AddProductScreenProps =
-  | NativeStackScreenProps<ProductsStackParamList, 'AddProduct'>
-  | NativeStackScreenProps<MyProductsStackParamList, 'AddProduct'>;
+export type ProductDetailScreenProps =
+  | NativeStackScreenProps<ProductsStackParamList, 'ProductDetail'>
+  | NativeStackScreenProps<MyProductsStackParamList, 'ProductDetail'>;

@@ -11,6 +11,9 @@ alwaysApply: true
 4) In the project, you should use redux (redux-toolkit, redux-query, etc.) for business logic.
 4) For each service (auth, home, etc.), you should create your own slice folder where the slice itself and the thunks folder with its thunks will be located.
 5) Each thunk currently uses endpoints stored in the api folder and are currently just promises that return mock data.
-
-
-Translated with DeepL.com (free version)
+6) Create a separate file for each thunk.
+7) Create a separate file for each request.
+8) Use as little business logic as possible inside the screens and components themselves.
+9) You have one navigation file that stores all the project navigation.
+10) Put all constants in a separate folder with files that are divided by type (auth.const, common.const, etc.).
+11) Write code like a senior React Native developer

@@ -8,12 +8,16 @@ import {
   Platform,
   ActivityIndicator,
   ScrollView,
+  Image,
 } from 'react-native';
+import { launchImageLibrary } from 'react-native-image-picker';
 import { styles } from './AddProductScreen.styles';
 import type { AddProductScreenProps } from './AddProductScreen.types';
 import { addProduct } from '../../store/slices/product/productSlice';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { colors } from '../../common/theme';
+
+const MAX_PHOTOS = 3;
 
 export function AddProductScreen({
   navigation,
@@ -25,6 +29,29 @@ export function AddProductScreen({
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [priceText, setPriceText] = useState('');
+  const [imageUris, setImageUris] = useState<string[]>([]);
+
+  const pickImages = useCallback(() => {
+    const remaining = MAX_PHOTOS - imageUris.length;
+    if (remaining <= 0) return;
+    launchImageLibrary(
+      {
+        mediaType: 'photo',
+        selectionLimit: remaining,
+      },
+      (response) => {
+        if (response.didCancel || !response.assets?.length) return;
+        const uris = response.assets
+          .map((a) => a.uri)
+          .filter((u): u is string => !!u);
+        setImageUris((prev) => [...prev, ...uris].slice(0, MAX_PHOTOS));
+      }
+    );
+  }, [imageUris.length]);
+
+  const removeImage = useCallback((index: number) => {
+    setImageUris((prev) => prev.filter((_, i) => i !== index));
+  }, []);
 
   const handleSubmit = useCallback(async () => {
     const price = Number(priceText.replace(/\s/g, ''));
@@ -38,12 +65,13 @@ export function AddProductScreen({
         price,
         sellerId: user.id,
         sellerName: user.name ?? user.email,
+        imageUrls: imageUris.length > 0 ? imageUris : undefined,
       })
     );
     if (addProduct.fulfilled.match(result)) {
       navigation.goBack();
     }
-  }, [dispatch, navigation, user, title, description, priceText]);
+  }, [dispatch, navigation, user, title, description, priceText, imageUris]);
 
   const canSubmit =
     title.trim().length > 0 &&
@@ -67,6 +95,32 @@ export function AddProductScreen({
         </Text>
 
         {error ? <Text style={styles.errorText}>{error}</Text> : null}
+
+        <Text style={styles.sectionLabel}>Фото (до {MAX_PHOTOS})</Text>
+        <View style={styles.photosRow}>
+          {imageUris.map((uri, index) => (
+            <View key={uri + index} style={styles.photoPreviewWrapper}>
+              <Image source={{ uri }} style={styles.photoPreview} resizeMode="cover" />
+              <Pressable
+                style={styles.photoRemoveBtn}
+                onPress={() => removeImage(index)}
+                hitSlop={8}
+              >
+                <Text style={styles.photoRemoveText}>×</Text>
+              </Pressable>
+            </View>
+          ))}
+          {imageUris.length < MAX_PHOTOS ? (
+            <Pressable
+              style={styles.photoAddBtn}
+              onPress={pickImages}
+              disabled={addLoading}
+            >
+              <Text style={styles.photoAddText}>+</Text>
+              <Text style={styles.photoAddHint}>Добавить</Text>
+            </Pressable>
+          ) : null}
+        </View>
 
         <TextInput
           style={styles.input}
