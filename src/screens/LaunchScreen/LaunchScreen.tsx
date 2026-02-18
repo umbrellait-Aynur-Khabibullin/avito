@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {View, Text} from 'react-native';
-import {styles} from './styles';
-import type {LaunchScreenProps} from './types';
+import {styles} from './LaunchScreen.styles';
+import type {LaunchScreenProps} from './LaunchScreen.types';
 
 const LAUNCH_DURATION_MS = 2000;
 
