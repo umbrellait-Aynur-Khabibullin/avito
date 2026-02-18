@@ -4,9 +4,9 @@ import {
   login,
   register,
   resetPasswordRequest,
-} from './thunks/authThunks';
+} from './thunks';
 
-export { login, register, resetPasswordRequest } from './thunks/authThunks';
+export { login, register, resetPasswordRequest } from './thunks';
 
 export type AuthState = {
   user: User | null;

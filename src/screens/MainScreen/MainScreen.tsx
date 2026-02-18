@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { View, Text, Pressable } from 'react-native';
 import { styles } from './MainScreen.styles';
 import type { MainScreenProps } from './MainScreen.types';
-import { logout } from '../../store/slices/auth/authSlice';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { useAppSelector } from '../../store/hooks';
 
-export function MainScreen(_props: MainScreenProps): React.JSX.Element {
-  const dispatch = useAppDispatch();
+export function MainScreen({ navigation }: MainScreenProps): React.JSX.Element {
   const user = useAppSelector((state) => state.auth.user);
+
+  const goToProfile = useCallback(() => {
+    navigation.navigate('Profile');
+  }, [navigation]);
 
   return (
     <View style={styles.container}>
@@ -16,11 +18,8 @@ export function MainScreen(_props: MainScreenProps): React.JSX.Element {
         {user ? `Добро пожаловать, ${user.name ?? user.email}` : 'Добро пожаловать в Avito'}
       </Text>
       {user ? (
-        <Pressable
-          style={styles.logoutButton}
-          onPress={() => dispatch(logout())}
-        >
-          <Text style={styles.logoutButtonText}>Выйти</Text>
+        <Pressable style={styles.profileButton} onPress={goToProfile}>
+          <Text style={styles.profileButtonText}>Профиль</Text>
         </Pressable>
       ) : null}
     </View>

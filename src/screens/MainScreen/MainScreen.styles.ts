@@ -18,13 +18,13 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     color: colors.textSecondary,
   },
-  logoutButton: {
+  profileButton: {
     marginTop: spacing.xl,
     paddingVertical: spacing.sm,
     paddingHorizontal: spacing.md,
     alignSelf: 'flex-start',
   },
-  logoutButtonText: {
+  profileButtonText: {
     fontSize: 14,
     color: colors.primary,
     fontWeight: '600',

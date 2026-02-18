@@ -3,13 +3,13 @@ import {View, Text} from 'react-native';
 import {styles} from './LaunchScreen.styles';
 import type {LaunchScreenProps} from './LaunchScreen.types';
 
-const LAUNCH_DURATION_MS = 2000;
+import { COMMON_CONST } from '../../constants/common.const';
 
-export function LaunchScreen({onFinish}: LaunchScreenProps): React.JSX.Element {
+export function LaunchScreen({ onFinish }: LaunchScreenProps): React.JSX.Element {
   useEffect(() => {
     const t = setTimeout(() => {
       onFinish?.();
-    }, LAUNCH_DURATION_MS);
+    }, COMMON_CONST.LAUNCH_DURATION_MS);
     return () => clearTimeout(t);
   }, [onFinish]);
 

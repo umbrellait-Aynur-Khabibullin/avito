@@ -7,7 +7,7 @@ import { StatusBar } from 'react-native';
 import { Provider } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { LaunchScreen } from './src/screens/LaunchScreen/LaunchScreen';
-import { MainScreen } from './src/screens/MainScreen/MainScreen';
+import { MainNavigator } from './src/navigation/MainNavigator';
 import { AuthNavigator } from './src/navigation/AuthNavigator';
 import { store } from './src/store';
 import { useAppSelector } from './src/store/hooks';
@@ -57,7 +57,9 @@ function AppContent(): React.JSX.Element {
   return (
     <>
       <StatusBar barStyle="dark-content" backgroundColor="#F5F5F5" />
-      <MainScreen />
+      <NavigationContainer>
+        <MainNavigator />
+      </NavigationContainer>
     </>
   );
 }
