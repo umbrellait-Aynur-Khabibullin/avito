@@ -18,11 +18,14 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     color: colors.textSecondary,
   },
-  profileButton: {
+  buttonsRow: {
+    flexDirection: 'row',
+    gap: spacing.md,
     marginTop: spacing.xl,
+  },
+  profileButton: {
     paddingVertical: spacing.sm,
     paddingHorizontal: spacing.md,
-    alignSelf: 'flex-start',
   },
   profileButtonText: {
     fontSize: 14,

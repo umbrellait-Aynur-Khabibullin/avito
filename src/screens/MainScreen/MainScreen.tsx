@@ -11,6 +11,10 @@ export function MainScreen({ navigation }: MainScreenProps): React.JSX.Element {
     navigation.navigate('Profile');
   }, [navigation]);
 
+  const goToProducts = useCallback(() => {
+    navigation.navigate('Products');
+  }, [navigation]);
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Главная</Text>
@@ -18,9 +22,14 @@ export function MainScreen({ navigation }: MainScreenProps): React.JSX.Element {
         {user ? `Добро пожаловать, ${user.name ?? user.email}` : 'Добро пожаловать в Avito'}
       </Text>
       {user ? (
-        <Pressable style={styles.profileButton} onPress={goToProfile}>
-          <Text style={styles.profileButtonText}>Профиль</Text>
-        </Pressable>
+        <View style={styles.buttonsRow}>
+          <Pressable style={styles.profileButton} onPress={goToProducts}>
+            <Text style={styles.profileButtonText}>Товары</Text>
+          </Pressable>
+          <Pressable style={styles.profileButton} onPress={goToProfile}>
+            <Text style={styles.profileButtonText}>Профиль</Text>
+          </Pressable>
+        </View>
       ) : null}
     </View>
   );
