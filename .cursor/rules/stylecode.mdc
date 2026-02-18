@@ -1,0 +1,16 @@
+---
+alwaysApply: true
+---
+
+1) For each screen or reusable component, you should create a separate folder containing three files:
+1. {name}.tsx - the component or screen itself
+2. {name}.styles.ts - component styles
+3. {name}.types.ts - types used in this component
+2) There should also be a folder where files with common project types are stored, if any are reused (for example, auth.types, common.types).
+3) If any components are reused in the project, they should be moved to a separate folder and accessed from there.
+4) In the project, you should use redux (redux-toolkit, redux-query, etc.) for business logic.
+4) For each service (auth, home, etc.), you should create your own slice folder where the slice itself and the thunks folder with its thunks will be located.
+5) Each thunk currently uses endpoints stored in the api folder and are currently just promises that return mock data.
+
+
+Translated with DeepL.com (free version)
