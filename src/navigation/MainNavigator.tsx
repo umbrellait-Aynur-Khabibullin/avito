@@ -1,13 +1,15 @@
 import React from 'react';
-import { Image } from 'react-native';
+import { View, Text, Image } from 'react-native';
+import { colors } from '../common/theme';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { getTabIconUrl } from '../constants/navigation.const';
+import { tabIcons, headerIcons } from '../assets/icons';
 import { ProductsScreen } from '../screens/ProductsScreen/ProductsScreen';
 import { AddProductScreen } from '../screens/AddProductScreen/AddProductScreen';
 import { ProductDetailScreen } from '../screens/ProductDetailScreen/ProductDetailScreen';
 import { MyProductsScreen } from '../screens/MyProductsScreen/MyProductsScreen';
 import { MessagesScreen } from '../screens/MessagesScreen/MessagesScreen';
+import { ChatScreen } from '../screens/ChatScreen/ChatScreen';
 import { ProfileScreen } from '../screens/ProfileScreen/ProfileScreen';
 import type {
   MainTabParamList,
@@ -18,6 +20,45 @@ import type {
 } from './MainNavigator.types';
 import { mainScreenOptions, tabScreenOptions } from './MainNavigator.styles';
 
+const SCREEN_TITLES: Record<string, string> = {
+  Products: 'Товары',
+  ProductDetail: 'Товар',
+  AddProduct: 'Добавить товар',
+  MyProducts: 'Мои товары',
+  Messages: 'Сообщения',
+  Chat: 'Чат',
+  Profile: 'Профиль',
+};
+
+function getScreenOptionsWithIcon(
+  route: { name: string; params?: Record<string, unknown> }
+) {
+  const isEditing =
+    route.name === 'AddProduct' && route.params?.product != null;
+  const title = isEditing
+    ? 'Редактирование товара'
+    : SCREEN_TITLES[route.name] ?? route.name;
+  const icon = isEditing ? undefined : headerIcons[route.name];
+  return {
+    ...mainScreenOptions,
+    title,
+    headerTitle: ({ children }: { children?: string }) => (
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+        {icon ? (
+          <Image
+            source={icon}
+            style={{ width: 22, height: 22, tintColor: colors.text }}
+            resizeMode="contain"
+          />
+        ) : null}
+        <Text style={{ color: colors.text, fontSize: 18, fontWeight: '600' }}>
+          {children ?? title}
+        </Text>
+      </View>
+    ),
+  };
+}
+
 const Tab = createBottomTabNavigator<MainTabParamList>();
 const ProductsStack = createNativeStackNavigator<ProductsStackParamList>();
 const MyProductsStack = createNativeStackNavigator<MyProductsStackParamList>();
@@ -26,68 +67,45 @@ const ProfileStack = createNativeStackNavigator<ProfileStackParamList>();
 
 function ProductsTabStack(): React.JSX.Element {
   return (
-    <ProductsStack.Navigator screenOptions={mainScreenOptions}>
-      <ProductsStack.Screen
-        name="Products"
-        component={ProductsScreen}
-        options={{ title: 'Товары' }}
-      />
-      <ProductsStack.Screen
-        name="ProductDetail"
-        component={ProductDetailScreen}
-        options={{ title: 'Товар' }}
-      />
-      <ProductsStack.Screen
-        name="AddProduct"
-        component={AddProductScreen}
-        options={{ title: 'Добавить товар' }}
-      />
+    <ProductsStack.Navigator
+      screenOptions={({ route }) => getScreenOptionsWithIcon(route)}
+    >
+      <ProductsStack.Screen name="Products" component={ProductsScreen} />
+      <ProductsStack.Screen name="ProductDetail" component={ProductDetailScreen} />
+      <ProductsStack.Screen name="AddProduct" component={AddProductScreen} />
     </ProductsStack.Navigator>
   );
 }
 
 function MyProductsTabStack(): React.JSX.Element {
   return (
-    <MyProductsStack.Navigator screenOptions={mainScreenOptions}>
-      <MyProductsStack.Screen
-        name="MyProducts"
-        component={MyProductsScreen}
-        options={{ title: 'Мои товары' }}
-      />
-      <MyProductsStack.Screen
-        name="ProductDetail"
-        component={ProductDetailScreen}
-        options={{ title: 'Товар' }}
-      />
-      <MyProductsStack.Screen
-        name="AddProduct"
-        component={AddProductScreen}
-        options={{ title: 'Добавить товар' }}
-      />
+    <MyProductsStack.Navigator
+      screenOptions={({ route }) => getScreenOptionsWithIcon(route)}
+    >
+      <MyProductsStack.Screen name="MyProducts" component={MyProductsScreen} />
+      <MyProductsStack.Screen name="ProductDetail" component={ProductDetailScreen} />
+      <MyProductsStack.Screen name="AddProduct" component={AddProductScreen} />
     </MyProductsStack.Navigator>
   );
 }
 
 function MessagesTabStack(): React.JSX.Element {
   return (
-    <MessagesStack.Navigator screenOptions={mainScreenOptions}>
-      <MessagesStack.Screen
-        name="Messages"
-        component={MessagesScreen}
-        options={{ title: 'Сообщения' }}
-      />
+    <MessagesStack.Navigator
+      screenOptions={({ route }) => getScreenOptionsWithIcon(route)}
+    >
+      <MessagesStack.Screen name="Messages" component={MessagesScreen} />
+      <MessagesStack.Screen name="Chat" component={ChatScreen} />
     </MessagesStack.Navigator>
   );
 }
 
 function ProfileTabStack(): React.JSX.Element {
   return (
-    <ProfileStack.Navigator screenOptions={mainScreenOptions}>
-      <ProfileStack.Screen
-        name="Profile"
-        component={ProfileScreen}
-        options={{ title: 'Профиль' }}
-      />
+    <ProfileStack.Navigator
+      screenOptions={({ route }) => getScreenOptionsWithIcon(route)}
+    >
+      <ProfileStack.Screen name="Profile" component={ProfileScreen} />
     </ProfileStack.Navigator>
   );
 }
@@ -97,8 +115,8 @@ function getTabIcon(
 ): (props: { focused: boolean; color: string; size: number }) => React.JSX.Element {
   return ({ color, size }) => (
     <Image
-      source={{ uri: getTabIconUrl(routeName, size, color) }}
-      style={{ width: size, height: size }}
+      source={tabIcons[routeName]}
+      style={{ width: size, height: size, tintColor: color }}
       resizeMode="contain"
     />
   );

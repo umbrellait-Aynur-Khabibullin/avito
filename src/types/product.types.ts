@@ -18,5 +18,13 @@ export type AddProductPayload = {
   price: number;
   sellerId: string;
   sellerName?: string;
+  sellerRating?: number;
+  imageUrls?: string[];
+};
+
+export type UpdateProductPayload = {
+  title?: string;
+  description?: string;
+  price?: number;
   imageUrls?: string[];
 };

@@ -19,6 +19,7 @@ export function getProfileRequest(params: GetProfileParams): Promise<Profile> {
     name,
     phone: '+7 (999) 123-45-67',
     avatarUrl: undefined,
+    rating: 4.8,
     createdAt: '2024-01-01T00:00:00Z',
   });
 }

@@ -3,14 +3,19 @@ import type { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
 import { colors } from '../common/theme';
 
 export const mainScreenOptions: NativeStackNavigationOptions = {
-  headerStyle: { backgroundColor: '#FF6B35' },
-  headerTintColor: '#FFFFFF',
+  headerStyle: { backgroundColor: colors.background },
+  headerShadowVisible: false,
+  headerTintColor: colors.text,
   headerTitleStyle: { fontWeight: '600', fontSize: 18 },
+  contentStyle: { backgroundColor: colors.backgroundSecondary },
 };
 
 export const tabScreenOptions: BottomTabNavigationOptions = {
   tabBarActiveTintColor: colors.primary,
-  tabBarInactiveTintColor: colors.textSecondary,
-  tabBarStyle: { backgroundColor: colors.background },
+  tabBarInactiveTintColor: colors.textMuted,
+  tabBarStyle: {
+    backgroundColor: colors.background,
+    borderTopColor: colors.border,
+  },
   tabBarLabelStyle: { fontSize: 12, fontWeight: '500' },
 };

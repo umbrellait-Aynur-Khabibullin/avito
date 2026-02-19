@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   View,
   Text,
@@ -13,7 +13,8 @@ import {
 import { launchImageLibrary } from 'react-native-image-picker';
 import { styles } from './AddProductScreen.styles';
 import type { AddProductScreenProps } from './AddProductScreen.types';
-import { addProduct } from '../../store/slices/product/productSlice';
+import { addProduct, updateProduct } from '../../store/slices/product/productSlice';
+import { getProfile } from '../../store/slices/profile/profileSlice';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { colors } from '../../common/theme';
 
@@ -21,15 +22,39 @@ const MAX_PHOTOS = 3;
 
 export function AddProductScreen({
   navigation,
+  route,
 }: AddProductScreenProps): React.JSX.Element {
+  const productToEdit = route.params?.product;
+  const isEditMode = !!productToEdit;
+
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.auth.user);
+  const profile = useAppSelector((state) => state.profile.profile);
   const { addLoading, error } = useAppSelector((state) => state.product);
 
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [priceText, setPriceText] = useState('');
-  const [imageUris, setImageUris] = useState<string[]>([]);
+  const [title, setTitle] = useState(productToEdit?.title ?? '');
+  const [description, setDescription] = useState(productToEdit?.description ?? '');
+  const [priceText, setPriceText] = useState(
+    productToEdit ? String(productToEdit.price) : ''
+  );
+  const [imageUris, setImageUris] = useState<string[]>(
+    productToEdit?.imageUrls ?? []
+  );
+
+  useEffect(() => {
+    if (productToEdit) {
+      setTitle(productToEdit.title);
+      setDescription(productToEdit.description);
+      setPriceText(String(productToEdit.price));
+      setImageUris(productToEdit.imageUrls ?? []);
+    }
+  }, [productToEdit?.id]);
+
+  useEffect(() => {
+    if (user?.id) {
+      dispatch(getProfile({ userId: user.id, email: user.email, name: user.name }));
+    }
+  }, [dispatch, user?.id, user?.email, user?.name]);
 
   const pickImages = useCallback(() => {
     const remaining = MAX_PHOTOS - imageUris.length;
@@ -55,23 +80,52 @@ export function AddProductScreen({
 
   const handleSubmit = useCallback(async () => {
     const price = Number(priceText.replace(/\s/g, ''));
-    if (!user?.id || !title.trim() || !description.trim() || Number.isNaN(price) || price <= 0) {
+    if (!title.trim() || !description.trim() || Number.isNaN(price) || price <= 0) {
       return;
     }
-    const result = await dispatch(
-      addProduct({
-        title: title.trim(),
-        description: description.trim(),
-        price,
-        sellerId: user.id,
-        sellerName: user.name ?? user.email,
-        imageUrls: imageUris.length > 0 ? imageUris : undefined,
-      })
-    );
-    if (addProduct.fulfilled.match(result)) {
-      navigation.goBack();
+    if (isEditMode && productToEdit) {
+      const result = await dispatch(
+        updateProduct({
+          id: productToEdit.id,
+          payload: {
+            title: title.trim(),
+            description: description.trim(),
+            price,
+            imageUrls: imageUris.length > 0 ? imageUris : undefined,
+          },
+        })
+      );
+      if (updateProduct.fulfilled.match(result)) {
+        navigation.goBack();
+      }
+    } else if (user?.id) {
+      const result = await dispatch(
+        addProduct({
+          title: title.trim(),
+          description: description.trim(),
+          price,
+          sellerId: user.id,
+          sellerName: user.name ?? user.email,
+          sellerRating: profile?.rating,
+          imageUrls: imageUris.length > 0 ? imageUris : undefined,
+        })
+      );
+      if (addProduct.fulfilled.match(result)) {
+        navigation.goBack();
+      }
     }
-  }, [dispatch, navigation, user, title, description, priceText, imageUris]);
+  }, [
+    dispatch,
+    navigation,
+    user,
+    profile?.rating,
+    title,
+    description,
+    priceText,
+    imageUris,
+    isEditMode,
+    productToEdit,
+  ]);
 
   const canSubmit =
     title.trim().length > 0 &&
@@ -80,7 +134,7 @@ export function AddProductScreen({
     !Number.isNaN(Number(priceText.replace(/\s/g, ''))) &&
     Number(priceText.replace(/\s/g, '')) > 0 &&
     !addLoading &&
-    !!user;
+    (isEditMode || !!user);
 
   return (
     <KeyboardAvoidingView
@@ -89,9 +143,13 @@ export function AddProductScreen({
       keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 0}
     >
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={styles.title}>Новый товар</Text>
+        <Text style={styles.title}>
+          {isEditMode ? 'Редактировать товар' : 'Новый товар'}
+        </Text>
         <Text style={styles.subtitle}>
-          Заполните данные о товаре
+          {isEditMode
+            ? 'Измените данные о товаре'
+            : 'Заполните данные о товаре'}
         </Text>
 
         {error ? <Text style={styles.errorText}>{error}</Text> : null}
@@ -157,7 +215,9 @@ export function AddProductScreen({
           {addLoading ? (
             <ActivityIndicator color={colors.background} />
           ) : (
-            <Text style={styles.buttonText}>Добавить товар</Text>
+            <Text style={styles.buttonText}>
+              {isEditMode ? 'Сохранить изменения' : 'Добавить товар'}
+            </Text>
           )}
         </Pressable>
       </ScrollView>

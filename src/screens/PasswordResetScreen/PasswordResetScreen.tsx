@@ -77,7 +77,7 @@ export function PasswordResetScreen({
         disabled={!canSubmit}
       >
         {isLoading ? (
-          <ActivityIndicator color="#FFFFFF" />
+          <ActivityIndicator color={colors.onPrimary} />
         ) : (
           <Text style={styles.buttonText}>Отправить</Text>
         )}

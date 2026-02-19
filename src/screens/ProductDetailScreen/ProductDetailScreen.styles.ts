@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { colors, spacing } from '../../common/theme';
+import { colors, spacing, borderRadius } from '../../common/theme';
 
 export const styles = StyleSheet.create({
   container: {
@@ -16,26 +16,44 @@ export const styles = StyleSheet.create({
   imageSlider: {
     height: 220,
     marginBottom: spacing.lg,
+    position: 'relative',
   },
   sliderItem: {
     height: 220,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: colors.surface,
   },
   sliderImage: {
     height: 220,
   },
+  sliderOverlay: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    backgroundColor: colors.overlay,
+  },
+  sliderCounter: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: colors.text,
+  },
   sliderDots: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    alignItems: 'center',
     gap: 6,
-    marginTop: spacing.sm,
   },
   sliderDot: {
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: colors.backgroundSecondary,
+    backgroundColor: colors.textMuted,
   },
   sliderDotActive: {
     backgroundColor: colors.primary,
@@ -69,9 +87,11 @@ export const styles = StyleSheet.create({
     marginBottom: spacing.xl,
   },
   sellerBlock: {
-    backgroundColor: colors.background,
-    borderRadius: 12,
+    backgroundColor: colors.surface,
+    borderRadius: borderRadius.md,
     padding: spacing.md,
+    borderWidth: 1,
+    borderColor: colors.border,
   },
   sellerRow: {
     flexDirection: 'row',
@@ -90,7 +110,7 @@ export const styles = StyleSheet.create({
   sellerAvatarText: {
     fontSize: 18,
     fontWeight: '600',
-    color: colors.background,
+    color: colors.onPrimary,
   },
   sellerName: {
     fontSize: 16,
@@ -111,13 +131,13 @@ export const styles = StyleSheet.create({
   messageButton: {
     marginTop: spacing.md,
     backgroundColor: colors.primary,
-    borderRadius: 12,
+    borderRadius: borderRadius.md,
     paddingVertical: spacing.md,
     alignItems: 'center',
   },
   messageButtonText: {
     fontSize: 16,
     fontWeight: '600',
-    color: colors.background,
+    color: colors.onPrimary,
   },
 });

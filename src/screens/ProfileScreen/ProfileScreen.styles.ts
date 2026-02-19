@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { colors, spacing } from '../../common/theme';
+import { colors, spacing, borderRadius } from '../../common/theme';
 
 export const styles = StyleSheet.create({
   container: {
@@ -21,7 +21,24 @@ export const styles = StyleSheet.create({
   avatarText: {
     fontSize: 36,
     fontWeight: '700',
-    color: colors.background,
+    color: colors.onPrimary,
+  },
+  avatarImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+  },
+  ratingRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.sm,
+    marginBottom: spacing.lg,
+  },
+  ratingValue: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: colors.textSecondary,
   },
   title: {
     fontSize: 24,
@@ -41,7 +58,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: spacing.md,
     borderBottomWidth: 1,
-    borderBottomColor: '#E0E0E0',
+    borderBottomColor: colors.border,
   },
   label: {
     fontSize: 14,
@@ -58,13 +75,13 @@ export const styles = StyleSheet.create({
     paddingVertical: spacing.md,
     paddingHorizontal: spacing.lg,
     backgroundColor: colors.primary,
-    borderRadius: 12,
+    borderRadius: borderRadius.md,
     alignItems: 'center',
   },
   logoutButtonText: {
     fontSize: 16,
     fontWeight: '600',
-    color: colors.background,
+    color: colors.onPrimary,
   },
   loader: {
     flex: 1,
@@ -73,7 +90,7 @@ export const styles = StyleSheet.create({
   },
   errorText: {
     fontSize: 14,
-    color: '#C62828',
+    color: colors.error,
     marginBottom: spacing.md,
   },
 });

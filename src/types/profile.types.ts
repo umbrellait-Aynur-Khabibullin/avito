@@ -4,5 +4,6 @@ export type Profile = {
   name?: string;
   phone?: string;
   avatarUrl?: string;
+  rating?: number;
   createdAt?: string;
 };

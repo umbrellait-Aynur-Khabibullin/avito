@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { colors, spacing } from '../../common/theme';
+import { colors, spacing, borderRadius } from '../../common/theme';
 
 export const styles = StyleSheet.create({
   container: {
@@ -20,13 +20,15 @@ export const styles = StyleSheet.create({
     marginBottom: spacing.xl,
   },
   input: {
-    backgroundColor: colors.background,
-    borderRadius: 12,
+    backgroundColor: colors.surface,
+    borderRadius: borderRadius.md,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.md,
     fontSize: 16,
     color: colors.text,
     marginBottom: spacing.md,
+    borderWidth: 1,
+    borderColor: colors.border,
   },
   inputMultiline: {
     minHeight: 100,
@@ -48,7 +50,7 @@ export const styles = StyleSheet.create({
   photoPreviewWrapper: {
     width: 80,
     height: 80,
-    borderRadius: 8,
+    borderRadius: borderRadius.sm,
     overflow: 'hidden',
     position: 'relative',
   },
@@ -63,12 +65,12 @@ export const styles = StyleSheet.create({
     width: 24,
     height: 24,
     borderRadius: 12,
-    backgroundColor: 'rgba(0,0,0,0.6)',
+    backgroundColor: colors.overlay,
     justifyContent: 'center',
     alignItems: 'center',
   },
   photoRemoveText: {
-    color: '#FFF',
+    color: colors.text,
     fontSize: 18,
     lineHeight: 20,
     fontWeight: '600',
@@ -76,10 +78,10 @@ export const styles = StyleSheet.create({
   photoAddBtn: {
     width: 80,
     height: 80,
-    borderRadius: 8,
+    borderRadius: borderRadius.sm,
     borderWidth: 1,
     borderStyle: 'dashed',
-    borderColor: colors.textSecondary,
+    borderColor: colors.textMuted,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -95,12 +97,12 @@ export const styles = StyleSheet.create({
   },
   errorText: {
     fontSize: 14,
-    color: '#C62828',
+    color: colors.error,
     marginBottom: spacing.md,
   },
   button: {
     backgroundColor: colors.primary,
-    borderRadius: 12,
+    borderRadius: borderRadius.md,
     paddingVertical: spacing.md,
     alignItems: 'center',
     marginTop: spacing.md,
@@ -111,6 +113,6 @@ export const styles = StyleSheet.create({
   buttonText: {
     fontSize: 16,
     fontWeight: '600',
-    color: colors.background,
+    color: colors.onPrimary,
   },
 });

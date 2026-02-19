@@ -6,13 +6,14 @@ import {
   Pressable,
   ActivityIndicator,
   ListRenderItem,
-  ScrollView,
   TextInput,
   Image,
 } from 'react-native';
 import { styles } from './ProductsScreen.styles';
 import type { ProductsScreenProps } from './ProductsScreen.types';
 import type { Product } from '../../types/product.types';
+import { getProductImageSource } from '../../assets/images/products';
+import { StarRating } from '../../components/StarRating';
 import type { ProductSortBy } from '../../store/slices/product/productSlice';
 import {
   getProducts,
@@ -34,13 +35,15 @@ function ProductCard({
   item: Product;
   onPress: () => void;
 }): React.JSX.Element {
-  const imageUrl =
-    item.imageUrls?.[0] ?? item.imageUrl;
+  const localImage = getProductImageSource(item.id);
+  const imageUri = item.imageUrls?.[0] ?? item.imageUrl;
 
   return (
     <Pressable style={styles.card} onPress={onPress}>
-      {imageUrl ? (
-        <Image source={{ uri: imageUrl }} style={styles.cardImage} resizeMode="cover" />
+      {localImage ? (
+        <Image source={localImage} style={styles.cardImage} resizeMode="cover" />
+      ) : imageUri ? (
+        <Image source={{ uri: imageUri }} style={styles.cardImage} resizeMode="cover" />
       ) : null}
       <View style={styles.cardBody}>
         <Text style={styles.cardTitle} numberOfLines={2}>
@@ -49,6 +52,12 @@ function ProductCard({
         <Text style={styles.cardDescription} numberOfLines={2}>
           {item.description}
         </Text>
+        <View style={styles.cardRatingRow}>
+          <StarRating rating={item.sellerRating ?? 0} size={14} />
+          <Text style={styles.cardSellerName} numberOfLines={1}>
+            {item.sellerName ?? `Пользователь ${item.sellerId}`}
+          </Text>
+        </View>
         <Text style={styles.cardPrice}>{formatPrice(item.price)}</Text>
       </View>
     </Pressable>
@@ -189,8 +198,8 @@ export function ProductsScreen({ navigation }: ProductsScreenProps): React.JSX.E
     );
   }
 
-  return (
-    <View style={styles.container}>
+  const stickyHeader = (
+    <>
       <Pressable
         style={styles.filterHeader}
         onPress={toggleFiltersExpanded}
@@ -295,6 +304,14 @@ export function ProductsScreen({ navigation }: ProductsScreenProps): React.JSX.E
       {error ? (
         <Text style={styles.errorText}>{error}</Text>
       ) : null}
+    </>
+  );
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.stickyHeader} pointerEvents="box-none">
+        {stickyHeader}
+      </View>
       <FlatList
         data={filteredItems}
         renderItem={renderItem}

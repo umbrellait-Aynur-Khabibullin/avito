@@ -37,7 +37,7 @@ function AppContent(): React.JSX.Element {
   if (screen === 'launch') {
     return (
       <>
-        <StatusBar barStyle="light-content" backgroundColor="#FF6B35" />
+        <StatusBar barStyle="light-content" backgroundColor="#0F172A" />
         <LaunchScreen onFinish={handleLaunchFinish} />
       </>
     );
@@ -46,7 +46,7 @@ function AppContent(): React.JSX.Element {
   if (screen === 'auth') {
     return (
       <>
-        <StatusBar barStyle="light-content" backgroundColor="#FF6B35" />
+        <StatusBar barStyle="light-content" backgroundColor="#0F172A" />
         <NavigationContainer>
           <AuthNavigator />
         </NavigationContainer>
@@ -56,7 +56,7 @@ function AppContent(): React.JSX.Element {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor="#F5F5F5" />
+      <StatusBar barStyle="light-content" backgroundColor="#0F172A" />
       <NavigationContainer>
         <MainNavigator />
       </NavigationContainer>

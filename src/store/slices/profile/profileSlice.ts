@@ -1,9 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { Profile } from '../../../types/profile.types';
 import { getProfile } from './thunks/getProfileThunk';
+import { updateProfile } from './thunks/updateProfileThunk';
 import { logout } from '../auth/authSlice';
 
 export { getProfile } from './thunks/getProfileThunk';
+export { updateProfile } from './thunks/updateProfileThunk';
 
 export type ProfileState = {
   profile: Profile | null;
@@ -40,6 +42,9 @@ const profileSlice = createSlice({
       .addCase(getProfile.rejected, (state, action) => {
         state.isLoading = false;
         state.error = (action.payload as string) ?? 'Ошибка загрузки профиля';
+      })
+      .addCase(updateProfile.fulfilled, (state, action) => {
+        state.profile = action.payload;
       })
       .addCase(logout, (state) => {
         state.profile = null;

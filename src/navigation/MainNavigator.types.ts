@@ -1,23 +1,28 @@
 import type { NavigatorScreenParams } from '@react-navigation/native';
 import type { Product } from '../types/product.types';
 
+export type ChatParams =
+  | { chatId: string }
+  | { product: Product };
+
 /** Стек внутри вкладки «Товары» */
 export type ProductsStackParamList = {
   Products: undefined;
-  ProductDetail: { product: Product };
+  ProductDetail: { product: Product; isOwnProduct?: boolean };
   AddProduct: undefined;
 };
 
 /** Стек внутри вкладки «Мои товары» */
 export type MyProductsStackParamList = {
   MyProducts: undefined;
-  ProductDetail: { product: Product };
-  AddProduct: undefined;
+  ProductDetail: { product: Product; isOwnProduct?: boolean };
+  AddProduct: { product?: Product };
 };
 
 /** Стек внутри вкладки «Сообщения» */
 export type MessagesStackParamList = {
   Messages: undefined;
+  Chat: ChatParams;
 };
 
 /** Стек внутри вкладки «Профиль» */

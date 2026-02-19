@@ -77,7 +77,7 @@ export function LoginScreen({ navigation }: LoginScreenProps): React.JSX.Element
         disabled={!canSubmit}
       >
         {isLoading ? (
-          <ActivityIndicator color="#FFFFFF" />
+          <ActivityIndicator color={colors.onPrimary} />
         ) : (
           <Text style={styles.buttonText}>Войти</Text>
         )}

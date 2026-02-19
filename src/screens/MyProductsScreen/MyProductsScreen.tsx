@@ -6,45 +6,15 @@ import {
   Pressable,
   ActivityIndicator,
   ListRenderItem,
-  Image,
+  Alert,
 } from 'react-native';
 import { styles } from './MyProductsScreen.styles';
 import type { MyProductsScreenProps } from './MyProductsScreen.types';
 import type { Product } from '../../types/product.types';
-import { getProducts } from '../../store/slices/product/productSlice';
+import { MyProductCard } from '../../components/MyProductCard';
+import { getProducts, deleteProduct } from '../../store/slices/product/productSlice';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { colors, spacing } from '../../common/theme';
-
-function formatPrice(price: number): string {
-  return `${price.toLocaleString('ru-RU')} ₽`;
-}
-
-function ProductCard({
-  item,
-  onPress,
-}: {
-  item: Product;
-  onPress: () => void;
-}): React.JSX.Element {
-  const imageUrl = item.imageUrls?.[0] ?? item.imageUrl;
-
-  return (
-    <Pressable style={styles.card} onPress={onPress}>
-      {imageUrl ? (
-        <Image source={{ uri: imageUrl }} style={styles.cardImage} resizeMode="cover" />
-      ) : null}
-      <View style={styles.cardBody}>
-        <Text style={styles.cardTitle} numberOfLines={2}>
-          {item.title}
-        </Text>
-        <Text style={styles.cardDescription} numberOfLines={2}>
-          {item.description}
-        </Text>
-        <Text style={styles.cardPrice}>{formatPrice(item.price)}</Text>
-      </View>
-    </Pressable>
-  );
-}
 
 export function MyProductsScreen({ navigation }: MyProductsScreenProps): React.JSX.Element {
   const dispatch = useAppDispatch();
@@ -61,21 +31,51 @@ export function MyProductsScreen({ navigation }: MyProductsScreenProps): React.J
   );
 
   const goToAddProduct = useCallback(() => {
-    navigation.navigate('AddProduct');
+    navigation.navigate('AddProduct', {});
   }, [navigation]);
 
   const goToProductDetail = useCallback(
     (product: Product) => {
-      navigation.navigate('ProductDetail', { product });
+      navigation.navigate('ProductDetail', { product, isOwnProduct: true });
     },
     [navigation]
   );
 
+  const goToEditProduct = useCallback(
+    (product: Product) => {
+      navigation.navigate('AddProduct', { product });
+    },
+    [navigation]
+  );
+
+  const handleDelete = useCallback(
+    (product: Product) => {
+      Alert.alert(
+        'Удалить товар?',
+        `Вы уверены, что хотите удалить «${product.title}»?`,
+        [
+          { text: 'Отмена', style: 'cancel' },
+          {
+            text: 'Удалить',
+            style: 'destructive',
+            onPress: () => dispatch(deleteProduct(product.id)),
+          },
+        ]
+      );
+    },
+    [dispatch]
+  );
+
   const renderItem: ListRenderItem<Product> = useCallback(
     ({ item }) => (
-      <ProductCard item={item} onPress={() => goToProductDetail(item)} />
+      <MyProductCard
+        item={item}
+        onPress={() => goToProductDetail(item)}
+        onEdit={() => goToEditProduct(item)}
+        onDelete={() => handleDelete(item)}
+      />
     ),
-    [goToProductDetail]
+    [goToProductDetail, goToEditProduct, handleDelete]
   );
 
   const keyExtractor = useCallback((item: Product) => item.id, []);
@@ -94,7 +94,7 @@ export function MyProductsScreen({ navigation }: MyProductsScreenProps): React.J
         <Text style={styles.addButtonText}>+ Добавить товар</Text>
       </Pressable>
       {error ? (
-        <Text style={{ color: '#C62828', paddingHorizontal: spacing.md }}>{error}</Text>
+        <Text style={{ color: colors.error, paddingHorizontal: spacing.md }}>{error}</Text>
       ) : null}
       <FlatList
         data={myItems}

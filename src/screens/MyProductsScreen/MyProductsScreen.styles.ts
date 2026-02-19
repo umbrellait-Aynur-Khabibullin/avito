@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { colors, spacing } from '../../common/theme';
+import { colors, spacing, borderRadius } from '../../common/theme';
 
 export const styles = StyleSheet.create({
   container: {
@@ -13,47 +13,18 @@ export const styles = StyleSheet.create({
   listContent: {
     paddingTop: spacing.md,
   },
-  card: {
-    backgroundColor: colors.background,
-    borderRadius: 12,
-    marginBottom: spacing.md,
-    overflow: 'hidden',
-  },
-  cardImage: {
-    width: '100%',
-    height: 140,
-  },
-  cardBody: {
-    padding: spacing.md,
-  },
-  cardTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: colors.text,
-    marginBottom: spacing.xs,
-  },
-  cardDescription: {
-    fontSize: 14,
-    color: colors.textSecondary,
-    marginBottom: spacing.sm,
-  },
-  cardPrice: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: colors.primary,
-  },
   addButton: {
     marginHorizontal: spacing.md,
     marginVertical: spacing.md,
     backgroundColor: colors.primary,
-    borderRadius: 12,
+    borderRadius: borderRadius.md,
     paddingVertical: spacing.md,
     alignItems: 'center',
   },
   addButtonText: {
     fontSize: 16,
     fontWeight: '600',
-    color: colors.background,
+    color: colors.onPrimary,
   },
   emptyText: {
     fontSize: 16,

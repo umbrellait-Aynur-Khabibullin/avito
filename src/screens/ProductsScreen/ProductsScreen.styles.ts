@@ -1,12 +1,17 @@
 import { StyleSheet } from 'react-native';
-import { colors, spacing } from '../../common/theme';
+import { colors, spacing, borderRadius } from '../../common/theme';
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.backgroundSecondary,
   },
+  stickyHeader: {
+    flexShrink: 0,
+    backgroundColor: colors.backgroundSecondary,
+  },
   list: {
+    flex: 1,
     paddingHorizontal: spacing.md,
     paddingBottom: spacing.xl,
   },
@@ -14,10 +19,12 @@ export const styles = StyleSheet.create({
     paddingTop: spacing.md,
   },
   card: {
-    backgroundColor: colors.background,
-    borderRadius: 12,
+    backgroundColor: colors.surface,
+    borderRadius: borderRadius.lg,
     marginBottom: spacing.md,
     overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: colors.border,
   },
   cardImage: {
     width: '100%',
@@ -37,6 +44,17 @@ export const styles = StyleSheet.create({
     color: colors.textSecondary,
     marginBottom: spacing.sm,
   },
+  cardRatingRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    marginBottom: spacing.sm,
+  },
+  cardSellerName: {
+    flex: 1,
+    fontSize: 12,
+    color: colors.textSecondary,
+  },
   cardPrice: {
     fontSize: 20,
     fontWeight: '700',
@@ -48,9 +66,9 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.md,
-    backgroundColor: colors.background,
+    backgroundColor: colors.surface,
     borderBottomWidth: 1,
-    borderBottomColor: colors.backgroundSecondary,
+    borderBottomColor: colors.border,
   },
   filterHeaderText: {
     fontSize: 16,
@@ -62,11 +80,11 @@ export const styles = StyleSheet.create({
     color: colors.textSecondary,
   },
   filterPanel: {
-    backgroundColor: colors.background,
+    backgroundColor: colors.surface,
     paddingHorizontal: spacing.md,
     paddingBottom: spacing.md,
     borderBottomWidth: 1,
-    borderBottomColor: colors.backgroundSecondary,
+    borderBottomColor: colors.border,
   },
   filterLabel: {
     fontSize: 14,
@@ -83,8 +101,8 @@ export const styles = StyleSheet.create({
     flex: 1,
     height: 44,
     borderWidth: 1,
-    borderColor: colors.backgroundSecondary,
-    borderRadius: 8,
+    borderColor: colors.border,
+    borderRadius: borderRadius.sm,
     paddingHorizontal: spacing.sm,
     fontSize: 16,
     color: colors.text,
@@ -98,8 +116,8 @@ export const styles = StyleSheet.create({
   filterInputFull: {
     height: 44,
     borderWidth: 1,
-    borderColor: colors.backgroundSecondary,
-    borderRadius: 8,
+    borderColor: colors.border,
+    borderRadius: borderRadius.sm,
     paddingHorizontal: spacing.sm,
     fontSize: 16,
     color: colors.text,
@@ -114,7 +132,7 @@ export const styles = StyleSheet.create({
   ratingOptionChip: {
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
-    borderRadius: 8,
+    borderRadius: borderRadius.sm,
     backgroundColor: colors.backgroundSecondary,
   },
   ratingOptionChipActive: {
@@ -126,14 +144,14 @@ export const styles = StyleSheet.create({
     color: colors.text,
   },
   ratingOptionTextActive: {
-    color: colors.background,
+    color: colors.onPrimary,
   },
   sortPanel: {
-    backgroundColor: colors.background,
+    backgroundColor: colors.surface,
     paddingHorizontal: spacing.md,
     paddingBottom: spacing.md,
     borderBottomWidth: 1,
-    borderBottomColor: colors.backgroundSecondary,
+    borderBottomColor: colors.border,
   },
   sortOptionRow: {
     flexDirection: 'row',
@@ -141,12 +159,12 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: spacing.sm,
     paddingHorizontal: spacing.sm,
-    borderRadius: 8,
+    borderRadius: borderRadius.sm,
     backgroundColor: colors.backgroundSecondary,
     marginBottom: spacing.xs,
   },
   sortOptionRowActive: {
-    backgroundColor: colors.primary + '20',
+    backgroundColor: colors.primary + '25',
   },
   sortOptionText: {
     fontSize: 14,
@@ -163,7 +181,7 @@ export const styles = StyleSheet.create({
     color: colors.primary,
   },
   errorText: {
-    color: '#C62828',
+    color: colors.error,
     paddingHorizontal: spacing.md,
   },
   emptyText: {

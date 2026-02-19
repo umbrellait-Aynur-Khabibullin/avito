@@ -1,8 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { Product } from '../../../types/product.types';
-import { addProduct, getProducts } from './thunks';
+import {
+  addProduct,
+  getProducts,
+  updateProduct,
+  deleteProduct,
+} from './thunks';
 
-export { addProduct, getProducts } from './thunks';
+export {
+  addProduct,
+  getProducts,
+  updateProduct,
+  deleteProduct,
+} from './thunks';
 
 export type ProductSortBy = 'price' | 'sellerRating';
 
@@ -60,6 +70,25 @@ const productSlice = createSlice({
       .addCase(addProduct.rejected, (state, action) => {
         state.addLoading = false;
         state.error = (action.payload as string) ?? 'Ошибка добавления товара';
+      })
+      .addCase(updateProduct.pending, (state) => {
+        state.addLoading = true;
+        state.error = null;
+      })
+      .addCase(updateProduct.fulfilled, (state, action) => {
+        state.addLoading = false;
+        const idx = state.items.findIndex((p) => p.id === action.payload.id);
+        if (idx !== -1) {
+          state.items[idx] = action.payload;
+        }
+        state.error = null;
+      })
+      .addCase(updateProduct.rejected, (state, action) => {
+        state.addLoading = false;
+        state.error = (action.payload as string) ?? 'Ошибка обновления товара';
+      })
+      .addCase(deleteProduct.fulfilled, (state, action) => {
+        state.items = state.items.filter((p) => p.id !== action.payload);
       });
   },
 });
